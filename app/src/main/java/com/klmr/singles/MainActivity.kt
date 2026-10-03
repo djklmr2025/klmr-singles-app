@@ -211,7 +211,8 @@ class MainActivity : Activity() {
             private fun route(u: Uri): Boolean {
                 return if (u.scheme == "https" && u.host.orEmpty() in ALLOWED) false else { open(u.toString()); true }
             }
-            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean = route(request.url)
+            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =
+                if (!request.isForMainFrame) false else route(request.url)
             @Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean = route(Uri.parse(url))
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
