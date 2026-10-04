@@ -2,6 +2,9 @@
 
 WebView portrait-only que muestra https://djklmr2025.github.io/klmr-singles/ con botones: Facebook, Doxer Music, YouTube, WhatsApp, DJ y Descargas (bloqueadas con codigo).
 
+## Descargar el APK
+https://github.com/djklmr2025/klmr-singles-app/raw/main/dist/KLMR-Singles.apk (v1.0, Android 5.0+)
+
 ## Compilar en tu PC
 1. Instala Android Studio (o JDK 17 + Android SDK 34 + Gradle 8.9).
 2. Abre esta carpeta en Android Studio y elige Build > Build APK(s), o en terminal: `gradle assembleDebug`.
