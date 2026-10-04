@@ -154,8 +154,8 @@ class MainActivity : Activity() {
         add(item(Ico(this, K.WA), "Contacto directo", "Contacto directo con el artista por WhatsApp") { open(WA) })
         add(item(Ico(this, K.DJ), "DJ", "Sitio DJ KLMR") { web.loadUrl(DJ) })
         dlIco = Ico(this, K.DL)
-        dlIco.locked = prefs.getString("dl", null) == null
-        add(item(dlIco, "Descargas", "Descargas protegidas con c\u00f3digo") { onDownload() })
+        dlIco.locked = false
+        add(item(dlIco, "Descargas", "Ir a secci\u00f3n de descargas") { onDownload() })
 
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -203,6 +203,7 @@ class MainActivity : Activity() {
         s.allowFileAccess = false
         s.setSupportZoom(false)
         s.mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
+        s.userAgentString = s.userAgentString + " KLMRApp/1.1"
         web.setBackgroundColor(0xFF07060F.toInt())
         web.isLongClickable = false
         web.setOnLongClickListener { true }
@@ -233,77 +234,8 @@ class MainActivity : Activity() {
         }
     }
 
-    private fun payload(): JSONObject? = try {
-        assets.open("unlock.json").bufferedReader().use { JSONObject(it.readText()) }
-    } catch (e: Exception) {
-        null
-    }
-
-    private fun decrypt(code: String, o: JSONObject): String? = try {
-        val salt = Base64.decode(o.getString("s"), Base64.DEFAULT)
-        val iv = Base64.decode(o.getString("i"), Base64.DEFAULT)
-        val ct = Base64.decode(o.getString("c"), Base64.DEFAULT)
-        val key = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
-            .generateSecret(PBEKeySpec(code.trim().toCharArray(), salt, 120000, 256)).encoded
-        val c = Cipher.getInstance("AES/GCM/NoPadding")
-        c.init(Cipher.DECRYPT_MODE, SecretKeySpec(key, "AES"), GCMParameterSpec(128, iv))
-        String(c.doFinal(ct), Charsets.UTF_8)
-    } catch (e: Exception) {
-        null
-    }
-
     private fun onDownload() {
-        val saved = prefs.getString("dl", null)
-        if (saved != null) { open(saved); return }
-        val pl = payload()
-        if (pl == null) { toast("Las descargas estar\u00e1n disponibles muy pronto."); return }
-        val box = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(dp(22), dp(8), dp(22), 0)
-        }
-        val msg = TextView(this).apply {
-            text = "Muestra tu llave: inserta el c\u00f3digo para entrar en modo completo y activar las descargas."
-            setTextColor(0xFFC9C7EE.toInt())
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-        }
-        val et = EditText(this).apply {
-            hint = "C\u00f3digo"
-            setTextColor(Color.WHITE)
-            setHintTextColor(0xFF8886AA.toInt())
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            isSingleLine = true
-        }
-        box.addView(msg)
-        box.addView(et)
-        val d = AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
-            .setTitle("Gracias por entrar al mundo Arkaios")
-            .setView(box)
-            .setPositiveButton("Desbloquear", null)
-            .setNegativeButton("Cancelar", null)
-            .create()
-        d.show()
-        val ok = d.getButton(AlertDialog.BUTTON_POSITIVE)
-        ok.setOnClickListener {
-            val code = et.text.toString()
-            if (code.isBlank()) return@setOnClickListener
-            ok.isEnabled = false
-            ok.text = "Verificando\u2026"
-            Thread {
-                val url = decrypt(code, pl)
-                runOnUiThread {
-                    if (url != null && url.startsWith("https://")) {
-                        prefs.edit().putString("dl", url).apply()
-                        dlIco.locked = false
-                        d.dismiss()
-                        toast("\u00a1Bienvenido al mundo Arkaios! Descargas desbloqueadas.")
-                    } else {
-                        ok.isEnabled = true
-                        ok.text = "Desbloquear"
-                        et.error = "C\u00f3digo incorrecto"
-                    }
-                }
-            }.start()
-        }
+        web.loadUrl(HOME + "#/descargas")
     }
 
     @Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")

@@ -9,8 +9,8 @@ android {
         applicationId = "com.klmr.singles"
         minSdk = 21
         targetSdk = 34
-        versionCode = (System.getenv("VERSION_CODE") ?: "1").toInt()
-        versionName = System.getenv("VERSION_NAME") ?: "1.0"
+        versionCode = (System.getenv("VERSION_CODE") ?: "2").toInt()
+        versionName = System.getenv("VERSION_NAME") ?: "1.1"
     }
     signingConfigs {
         create("release") {

@@ -8,7 +8,8 @@ WebView portrait-only que muestra https://djklmr2025.github.io/klmr-singles/ con
 3. El APK queda en `app/build/outputs/apk/debug/`.
 
 ## Habilitar las descargas
-`python3 tools/make_unlock.py "CODIGO" "https://drive.google.com/..."` genera `app/src/main/assets/unlock.json` (enlace cifrado). Recompila despues.
+`python3 tools/make_unlock.py "CODIGO" "https://enlace-de-descarga.com/..."` genera `app/src/main/assets/unlock.json` (enlace cifrado). Recompila despues.
 
 ## Compilar en GitHub Actions
 Ya incluido en `.github/workflows/build.yml` (requiere los secretos KS_B64 y KS_PASS del keystore y que la cuenta pueda usar Actions).
+
