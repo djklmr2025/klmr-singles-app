@@ -40,6 +40,7 @@ import javax.crypto.spec.SecretKeySpec
 private const val HOME = "https://djklmr2025.github.io/klmr-singles/"
 private const val FB = "https://www.facebook.com/KLMROFFICIALCHANNEL"
 private const val DOXER = "https://cd-trckas-plataforma.vercel.app/"
+private const val EXCLUSIVE = "https://cd-trckas-plataforma.vercel.app/exclusive"
 private const val CD_DOWNLOAD = "https://arkaios.qzz.io/s/sVsf_hs"
 private const val YT = "https://www.youtube.com/@KLMROFFCIALCHANNEL"
 private const val WA = "https://wa.me/525516469310"
@@ -259,7 +260,7 @@ class MainActivity : Activity() {
         AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
             .setTitle("Descargas KLMR")
             .setMessage("Accede al CD completo mediante el portal de acceso por código. Tu descarga se habilitará allí cuando se valide tu acceso.")
-            .setPositiveButton("Ingresar código") { _, _ -> open(DOXER) }
+            .setPositiveButton("Ingresar código") { _, _ -> open(EXCLUSIVE) }
             .setNegativeButton("Cancelar", null)
             .show()
     }
