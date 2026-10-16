@@ -9,18 +9,25 @@ android {
         applicationId = "com.klmr.singles"
         minSdk = 21
         targetSdk = 34
-        versionCode = (System.getenv("VERSION_CODE") ?: "1").toInt()
-        versionName = System.getenv("VERSION_NAME") ?: "1.0"
+        versionCode = (System.getenv("VERSION_CODE") ?: "3").toInt()
+        versionName = System.getenv("VERSION_NAME") ?: "1.2"
     }
     signingConfigs {
         create("release") {
-            val p = System.getenv("KS_PATH")
-            if (p != null) {
-                storeFile = file(p)
+            val envPath = System.getenv("KS_PATH")
+            val localV2 = file("C:/ARKAIOS/klmr-singles-keystore/klmr-v2.p12")
+            if (envPath != null) {
+                storeFile = file(envPath)
                 storeType = "pkcs12"
                 storePassword = System.getenv("KS_PASS")
                 keyAlias = "klmr"
                 keyPassword = System.getenv("KS_PASS")
+            } else if (localV2.exists()) {
+                storeFile = localV2
+                storeType = "pkcs12"
+                storePassword = "EDmLWbQiVa782pwP4kj3"
+                keyAlias = "klmr"
+                keyPassword = "EDmLWbQiVa782pwP4kj3"
             }
         }
     }
